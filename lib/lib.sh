@@ -153,19 +153,16 @@ get_latest_versions() {
 }
 
 update_lib_source() {
-  GITHUB_URL="$GITHUB_BASE_URL/$GITHUB_SOURCE"
-  rm -rf /tmp/lib.sh
-  curl -sSL -o /tmp/lib.sh "$GITHUB_URL"/lib/lib.sh
   # shellcheck source=lib/lib.sh
-  source /tmp/lib.sh
+  source ./lib/lib.sh
 }
 
 run_installer() {
-  bash <(curl -sSL "$GITHUB_URL/installers/$1.sh")
+  bash "./installers/$1.sh"
 }
 
 run_ui() {
-  bash <(curl -sSL "$GITHUB_URL/ui/$1.sh")
+  bash "./ui/$1.sh"
 }
 
 array_contains_element() {
