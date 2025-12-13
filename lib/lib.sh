@@ -153,16 +153,17 @@ get_latest_versions() {
 }
 
 update_lib_source() {
+  CURRENT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
   # shellcheck source=lib/lib.sh
-  source ./lib/lib.sh
+  source "$CURRENT_DIR/lib.sh"
 }
 
 run_installer() {
-  bash "./installers/$1.sh"
+  bash "$CURRENT_DIR/../installers/$1.sh"
 }
 
 run_ui() {
-  bash "./ui/$1.sh"
+  bash "$CURRENT_DIR/../ui/$1.sh"
 }
 
 array_contains_element() {

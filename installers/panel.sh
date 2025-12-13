@@ -28,11 +28,13 @@ set -e
 #                                                                                    #
 ######################################################################################
 
+CURRENT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
+
 # Check if script is loaded, load if not or fail otherwise.
 fn_exists() { declare -F "$1" >/dev/null; }
 if ! fn_exists lib_loaded; then
   # shellcheck source=lib/lib.sh
-  source ./lib/lib.sh
+  source "$CURRENT_DIR/../lib/lib.sh"
   ! fn_exists lib_loaded && echo "* ERROR: Could not load lib script" && exit 1
 fi
 
@@ -183,7 +185,7 @@ insert_cronjob() {
 install_pteroq() {
   output "Installing pteroq service.."
 
-  cp ./configs/pteroq.service /etc/systemd/system/pteroq.service
+  cp "$CURRENT_DIR/../configs/pteroq.service" /etc/systemd/system/pteroq.service
 
   case "$OS" in
   debian | ubuntu)
@@ -225,7 +227,7 @@ selinux_allow() {
 }
 
 php_fpm_conf() {
-  cp ./configs/www-pterodactyl.conf /etc/php-fpm.d/www-pterodactyl.conf
+  cp "$CURRENT_DIR/../configs/www-pterodactyl.conf" /etc/php-fpm.d/www-pterodactyl.conf
 
   systemctl enable php-fpm
   systemctl start php-fpm
@@ -376,7 +378,7 @@ configure_nginx() {
 
   rm -rf "$CONFIG_PATH_ENABL"/default
 
-  cp "./configs/$DL_FILE" "$CONFIG_PATH_AVAIL"/pterodactyl.conf
+  cp "$CURRENT_DIR/../configs/$DL_FILE" "$CONFIG_PATH_AVAIL"/pterodactyl.conf
 
   sed -i -e "s@<domain>@${FQDN}@g" "$CONFIG_PATH_AVAIL"/pterodactyl.conf
 

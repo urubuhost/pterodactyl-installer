@@ -28,11 +28,13 @@ set -e
 #                                                                                    #
 ######################################################################################
 
+CURRENT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
+
 # Check if script is loaded, load if not or fail otherwise.
 fn_exists() { declare -F "$1" >/dev/null; }
 if ! fn_exists lib_loaded; then
   # shellcheck source=lib/lib.sh
-  source ./lib/lib.sh
+  source "$CURRENT_DIR/../lib/lib.sh"
   ! fn_exists lib_loaded && echo "* ERROR: Could not load lib script" && exit 1
 fi
 
@@ -125,7 +127,7 @@ ptdl_dl() {
 systemd_file() {
   output "Installing systemd service.."
 
-  cp ./configs/wings.service /etc/systemd/system/wings.service
+  cp "$CURRENT_DIR/../configs/wings.service /etc/systemd/system/wings.service"
   systemctl daemon-reload
   systemctl enable wings
 

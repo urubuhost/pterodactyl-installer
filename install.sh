@@ -41,10 +41,12 @@ if ! [ -x "$(command -v curl)" ]; then
   exit 1
 fi
 
+CURRENT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
+
 # Always remove lib.sh, before downloading it
 [ -f /tmp/lib.sh ] && rm -rf /tmp/lib.sh
 # shellcheck source=lib/lib.sh
-source ./lib/lib.sh
+source "$CURRENT_DIR/lib/lib.sh"
 
 execute() {
   echo -e "\n\n* pterodactyl-installer $(date) \n\n" >>$LOG_PATH

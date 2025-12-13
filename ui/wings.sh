@@ -28,11 +28,13 @@ set -e
 #                                                                                    #
 ######################################################################################
 
+CURRENT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
+
 # Check if script is loaded, load if not or fail otherwise.
 fn_exists() { declare -F "$1" >/dev/null; }
 if ! fn_exists lib_loaded; then
   # shellcheck source=lib/lib.sh
-  source ./lib/lib.sh
+  source "$CURRENT_DIR/../lib/lib.sh"
   ! fn_exists lib_loaded && echo "* ERROR: Could not load lib script" && exit 1
 fi
 
@@ -170,7 +172,7 @@ main() {
       ASK=false
 
       [ -z "$FQDN" ] && error "FQDN cannot be empty"                                                            # check if FQDN is empty
-      bash ./lib/verify-fqdn.sh "$FQDN" || ASK=true                                                             # check if FQDN is valid
+      bash "$CURRENT_DIR/../lib/verify-fqdn.sh" "$FQDN" || ASK=true                                                             # check if FQDN is valid
       [ -d "/etc/letsencrypt/live/$FQDN/" ] && error "A certificate with this FQDN already exists!" && ASK=true # check if cert exists
 
       [ "$ASK" == true ] && FQDN=""
