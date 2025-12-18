@@ -127,7 +127,7 @@ ptdl_dl() {
 systemd_file() {
   output "Installing systemd service.."
 
-  cp "$CURRENT_DIR/../configs/wings.service /etc/systemd/system/wings.service"
+  cp "$CURRENT_DIR/../configs/wings.service" /etc/systemd/system/wings.service
   systemctl daemon-reload
   systemctl enable wings
 
